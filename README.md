@@ -1,6 +1,13 @@
 # vocab
 Vocabulary objects for natural language processing
 
+Installation:
+
+```bash
+pip install vocab
+pip install git+https://github.com/vzhong/vocab.git
+```
+
 
 Usage:
 
