@@ -1,5 +1,5 @@
 from vocab import UnkVocab, OutOfVocabularyException
-from vocab.test.test_vocab import TestVocab
+from test.test_vocab import TestVocab
 import unittest
 
 

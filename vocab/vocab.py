@@ -7,13 +7,25 @@ class OutOfVocabularyException(Exception):
 
 
 class Vocab:
+    """
+    A vocabulary object for converting between words and numerical indices.
+
+    Attributes:
+        _index2word (list): an ordered list of words in the vocabulary.
+        _word2index (dict): maps words to their respective indices.
+        counts (dict): the number of times each word has been added to the vocabulary.
+        
+    """
 
     _reserved = set()  # words in here will not be discarded during pruning
 
     def __init__(self, words=()):
         """
-        Arguments:
+        Args:
             words (:obj:`list` of :obj:`str`, optional): words to build vocab from.
+
+        Example:
+            >>> Vocab(['initial', 'words', 'for', 'the', 'vocabulary'])
         """
         self._index2word = []
         self._word2index = {}
@@ -25,6 +37,10 @@ class Vocab:
             self.word2index(words, train=True)
 
     def __len__(self):
+        """
+        Returns:
+            int: number of words in the vocabulary.
+        """
         return len(self._index2word)
 
     def __repr__(self):
@@ -42,7 +58,7 @@ class Vocab:
 
     def contains_same_content(self, another, same_counts=True):
         """
-        Arguments:
+        Args:
             another (Vocab): another vocab to compare against.
             same_counts (:obj:`bool`, optional): whether to also check the counts.
 
@@ -70,7 +86,7 @@ class Vocab:
     @classmethod
     def from_dict(cls, d):
         """
-        Arguments:
+        Args:
             d (dict): dictionary of the vocab object.
 
         Returns:
@@ -84,7 +100,7 @@ class Vocab:
 
     def copy(self, keep_words=True):
         """
-        Arguments:
+        Args:
             keep_words (bool): whether to copy words in the vocab. Defaults to `True`.
 
         Returns:
@@ -94,7 +110,7 @@ class Vocab:
 
     def prune_by_count(self, cutoff):
         """
-        Arguments:
+        Args:
             cutoff (int): words occurring less than this number of times are removed from the new vocab.
 
         Returns:
@@ -109,7 +125,7 @@ class Vocab:
 
     def prune_by_total(self, total):
         """
-        Arguments:
+        Args:
             total (int): maximum vocab size
         Returns:
             Vocab: a copy of this vocab with only the top `total` words kept.
@@ -153,7 +169,7 @@ class Vocab:
         What to do when the word is out of vocabulary and not in training mode.
         You should not use this function explicitly.
 
-        Arguments:
+        Args:
             word (str): word that trigged the OOV exception.
         """
         raise OutOfVocabularyException("Word '{}' is not in the vocabulary".format(word))
