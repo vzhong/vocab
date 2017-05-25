@@ -2,8 +2,8 @@ Vocab
 =====
 
 .. image:: https://readthedocs.org/projects/vocab/badge/?version=latest
-:target: http://vocab.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: http://vocab.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 .. image:: https://travis-ci.org/vzhong/vocab.svg?branch=master
     :target: https://travis-ci.org/vzhong/vocab
 
