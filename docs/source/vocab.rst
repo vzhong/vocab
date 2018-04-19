@@ -1,8 +1,11 @@
 vocab package
 =============
 
-vocab.unk_vocab module
-----------------------
+Submodules
+----------
+
+vocab.unk\_vocab module
+-----------------------
 
 .. automodule:: vocab.unk_vocab
     :members:
@@ -13,6 +16,15 @@ vocab.vocab module
 ------------------
 
 .. automodule:: vocab.vocab
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: vocab
     :members:
     :undoc-members:
     :show-inheritance:

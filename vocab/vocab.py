@@ -47,6 +47,10 @@ class Vocab:
         return "{}({})".format(self.__class__.__name__, len(self))
 
     def __eq__(self, another):
+        if self.__class__ != another.__class__:
+            return False
+        if len(self) != len(another):
+            return False
         for i, w in enumerate(self._index2word):
             if w not in self._reserved:
                 if w != another._index2word[i] or self.counts[w] != another.counts[w]:
@@ -194,3 +198,54 @@ class Vocab:
         if index >= len(self):
             raise OutOfVocabularyException('Index {} exceeds vocab size {} and is not a valid word index'.format(index, len(self)))
         return self._index2word[index]
+
+    def word2padded_index(self, lists_of_words, pad='<pad>', train=False, enforce_end_pad=True):
+        """
+        Args:
+            lists_of_words (list): list of lists of words to pad
+            pad (:obj:`str`, optional): word to use for padding. Defaults to `'<pad>'`.
+            train (:obj:`bool`, optional): whether to add unknown words to the vocabulary. Defaults to `False`.
+            enforce_end_pad (:obj:`bool`, optional): whether to always append a pad word to the end of each sentence.
+
+        Returns:
+            list: list of lists of word indices that are padded to be a matrix
+            list: list of lengths for each valid sequence. Note that if `enforce_end_pad=True`, then the valid sequence includes the additional pad at the end.
+
+        Raises:
+            OutOfVocabularyException: if `lists_of_words` contains words not in the vocabulary and `train=False`.
+        """
+        if pad not in self._word2index and not train:
+            raise OutOfVocabularyException("Pad word '{}' is not in the vocabulary".format(pad))
+        seqs = [s + [pad] for s in lists_of_words] if enforce_end_pad else lists_of_words
+        lens = [len(s) for s in seqs]
+        max_len = max(lens)
+        indices = [self.word2index(s, train=train) for s in seqs]
+        pad_index = self.word2index(pad, train=train)
+        padded_indices = [s + [pad_index] * (max_len - l) for s, l in zip(indices, lens)]
+        return padded_indices, lens
+
+    def padded_index2word(self, padded_indices, pad='<pad>'):
+        """
+        Args:
+            padded_indices (list): list of lists of word indices to depad
+            pad (:obj:`str`, optional): word to use for padding. Defaults to `'<pad>'`.
+
+        Returns:
+            list: list of lists of words that correspond to the depadded `padded_indices`.
+            list: list of lengths for each valid sequence. Note that if `enforce_end_pad=True`, then the valid sequence includes the additional pad at the end.
+
+        Raises:
+            OutOfVocabularyException: if `padded_indices` contains indices not in the vocabulary or if `pad` is a word not in the vocabulary.
+        """
+        if pad not in self._word2index:
+            raise OutOfVocabularyException("Pad word '{}' is not in the vocabulary".format(pad))
+        pad_index = self.word2index(pad)
+        depadded = []
+        for indices in padded_indices:
+            try:
+                end = indices.index(pad_index)
+            except ValueError as e:
+                end = len(indices)
+            finally:
+                depadded.append(self.index2word(indices[:end]))
+        return depadded
