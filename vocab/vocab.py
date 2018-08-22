@@ -1,3 +1,4 @@
+import sys
 from collections import Counter
 from copy import deepcopy
 
@@ -197,7 +198,7 @@ class Vocab:
             raise OutOfVocabularyException('Index {} is negative and is not a valid word index'.format(index))
         if index >= len(self):
             raise OutOfVocabularyException('Index {} exceeds vocab size {} and is not a valid word index'.format(index, len(self)))
-        return self._index2word[index]
+        return sys.intern(self._index2word[index])
 
     def word2padded_index(self, lists_of_words, pad='<pad>', train=False, enforce_end_pad=True):
         """

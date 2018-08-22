@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='vocab',
-    version='0.0.3',
+    version='0.0.4',
 
     description='Vocabulary management for NLP in Python.',
     long_description=long_description,
