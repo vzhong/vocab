@@ -1,2 +1,2 @@
-from vocab.vocab import Vocab, OutOfVocabularyException
-from vocab.unk_vocab import UnkVocab
+from .vocab import Vocab, OutOfVocabularyException
+from .unk_vocab import UnkVocab
